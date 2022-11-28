@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const app = express()
 const http = require('http').createServer(app)
 
+// Express App Config
 app.use(cookieParser())
 app.use(express.json())
 if (process.env.NODE_ENV === 'production') {
@@ -19,8 +20,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
+const {setupSocketAPI} = require('./services/socket.service')
 
-
+// routes
+const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware')
+app.all('*', setupAsyncLocalStorage)
 
 app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
