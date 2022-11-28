@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 
-app.get('/**', (req, res) => {
+app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
