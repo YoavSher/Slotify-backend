@@ -6,8 +6,8 @@ var connection = mysql.createConnection({
     port: 3306,
     user: 'yoavroni',
     password: 'yoavroni',
-    // database: 'slotify_db',
-    database: 'test',
+    database: 'slotify_db',
+    // database: 'test',
     insecureAuth: true
 })
 

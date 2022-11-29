@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const playlistRoutes = require('./api/playlist/playlist.routes')
+const songRoutes = require('./api/song/song.routes')
 const { setupSocketAPI } = require('./services/socket.service')
 
 // routes
@@ -29,6 +30,7 @@ const { setupSocketAPI } = require('./services/socket.service')
 // app.all('*', setupAsyncLocalStorage)
 
 app.use('/api/playlist', playlistRoutes)
+app.use('/api/song', songRoutes)
 setupSocketAPI(http)
 
 
