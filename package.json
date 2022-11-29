@@ -2,10 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "npx nodemon"
+    "start": "set NODE_ENV=development&&nodemon server.ts",
+    "server:dev": "set NODE_ENV=development&&nodemon server.ts",
+    "server:prod": "set NODE_ENV=production&&node server.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,7 @@
     "socket.io": "^4.5.4"
   },
   "devDependencies": {
+    "@types/express": "^4.17.14",
     "@types/node": "^18.11.9",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",

@@ -1,3 +1,5 @@
+export { }
+
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
@@ -19,12 +21,16 @@ if (process.env.NODE_ENV === 'production') {
     app.use(cors(corsOptions))
 }
 
-
-const {setupSocketAPI} = require('./services/socket.service')
+const playlistRoutes = require('./api/playlist/playlist.routes')
+const { setupSocketAPI } = require('./services/socket.service')
 
 // routes
-const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware')
-app.all('*', setupAsyncLocalStorage)
+// const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware')
+// app.all('*', setupAsyncLocalStorage)
+
+app.use('/api/playlist', playlistRoutes)
+setupSocketAPI(http)
+
 
 app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
@@ -36,3 +42,4 @@ const port = process.env.PORT || 3030
 http.listen(port, () => {
     logger.info('Server is running on port: ' + port)
 })
+
