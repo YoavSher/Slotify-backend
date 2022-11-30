@@ -1,4 +1,4 @@
-import { MiniUser } from "./mini-user"
+import { MiniUser } from "./user"
 import { Song } from "./song"
 
 export interface Playlist {
