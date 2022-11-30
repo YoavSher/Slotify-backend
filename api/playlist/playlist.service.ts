@@ -15,14 +15,13 @@ async function query() {
 //     songs: []
 // } as Playlist
 
-async function add() {
+async function add(userId: string) {
     try {
-        // const collection = await dbService.getCollection('board')
-        // await collection.insertOne(board)
-        // return board
-        sqlService.runSQL(`INSERT INTO playlist (name, imgUrl, tags, creatorId, likedByUsers, songs)
+
+        const query = `INSERT INTO playlists (name, image, creatorId)
         VALUES ('New Playlist','https://thumbs.dreamstime.com/b/music-background-panorama-13786355.jpg',
-        '[]', 1,'[]','[]')`)
+        '${userId}')`
+        sqlService.runSQL(query)
     } catch (err) {
         logger.error('cannot add board', err)
         throw err

@@ -10,8 +10,9 @@ async function add(songs: Song[]) {
     try {
         songs.forEach(async ({ videoId, duration, image, artist, title }) => {
             try {
-                await sqlService.runSQL(`INSERT INTO songs (videoId, title, artist, image,duration)
-                VALUES ('${videoId}','${title}','${artist}','${image}',${duration})`)
+                const query = `INSERT INTO songs (videoId, title, artist, image,duration)
+                VALUES ('${videoId}','${title}','${artist}','${image}',${duration})`
+                await sqlService.runSQL(query)
             } catch (err) {
                 logger.error('song already exists', err)
             }

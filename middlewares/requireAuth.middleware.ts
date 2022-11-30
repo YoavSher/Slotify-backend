@@ -1,29 +1,17 @@
-export {}
-// const authService = require('../api/auth/auth.service')
-// const logger = require('../services/logger.service')
+export { }
+import { Request, Response } from 'express';
+const authService = require('../api/auth/auth.service')
 
-// function requireAuth(req: { cookies: { loginToken: any } }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: string): any; new(): any } } }, next: () => void) {
-//     if (!req?.cookies?.loginToken) return res.status(401).send('Not Authenticated')
-//     const loggedinUser = authService.validateToken(req.cookies.loginToken)
-//     if (!loggedinUser) return res.status(401).send('Not Authenticated')
-//     next()
-// }
-
-// function requireAdmin(req: { cookies: { loginToken: any } }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: string): any; new(): any }; end: { (arg0: string): void; new(): any } } }, next: () => void) {
-//     if (!req?.cookies?.loginToken) return res.status(401).send('Not Authenticated')
-//     const loggedinUser = authService.validateToken(req.cookies.loginToken)
-//     if (!loggedinUser.isAdmin) {
-//         logger.warn(loggedinUser.fullname + 'attempted to perform admin action')
-//         res.status(403).end('Not Authorized')
-//         return
-//     }
-//     next()
-// }
+function requireAuth(req: Request, res: Response, next: () => void) {
+    if (!req?.cookies?.loginToken) return res.status(401).send('Not Authenticated')
+    const loggedinUser = authService.validateToken(req.cookies.loginToken)
+    if (!loggedinUser) return res.status(401).send('Not Authenticated')
+    next()
+}
 
 
-// // module.exports = requireAuth
+// module.exports = requireAuth
 
-// module.exports = {
-//     requireAuth,
-//     requireAdmin
-// }
+module.exports = {
+    requireAuth,
+}
