@@ -9,15 +9,33 @@ async function addSongs(req: Request, res: Response) {
     try {
         const songs = req.body
         const addedSongs = await songService.add(songs)
-        // res.json(addedPlaylist)
     } catch (err) {
         logger.error('Failed to add board', err)
-        res.status(500).send({ err: 'Failed to add board' })
+        res.status(500).send({ err: 'Failed to add songs' })
     }
+}
+
+async function getUsersLikedSongs(req: Request, res: Response) {
+    try {
+        const userId = req.params.id
+        const likedSongs = await songService.getUserSongs(userId)
+        res.json(likedSongs)
+    } catch (err) {
+        logger.error('Failed to add board', err)
+        res.status(500).send({ err: 'Failed get songs' })
+    }
+}
+
+async function likeSongByUser(req: Request, res: Response) {
+    console.log(req.body)
+    const query = `INSERT INTO usersLikedSongs (userId,songId,addedAt)
+    values(2,'_FrOQC-zEog',1111111);`
 }
 
 
 
 module.exports = {
     addSongs,
+    getUsersLikedSongs,
+    likeSongByUser
 }

@@ -10,8 +10,10 @@ async function add(songs: Song[]) {
     try {
         songs.forEach(async ({ videoId, duration, image, artist, title }) => {
             try {
-                await sqlService.runSQL(`INSERT INTO songs (videoId, title, artist, image,duration)
-                VALUES ('${videoId}','${title}','${artist}','${image}',${duration})`)
+                const query = `INSERT INTO songs (videoId, title, artist, image,duration)
+                VALUES ('${videoId}','${title}','${artist}','${image}',${duration})`
+
+                await sqlService.runSQL(query)
             } catch (err) {
                 logger.error('song already exists', err)
             }
@@ -21,11 +23,25 @@ async function add(songs: Song[]) {
     }
 }
 
+async function getUserSongs(userId: number) {
+    try {
+        const query = `SELECT addedAt,videoId,title,artist,image,duration
+        FROM usersLikedSongs
+        INNER JOIN songs
+        ON songs.videoId=usersLikedSongs.songId
+        WHERE userId=${userId};`
+
+        const likedSongs = await sqlService.runSQL(query)
+        return likedSongs
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+
 
 module.exports = {
-    // query,
-    // remove,
     add,
-    // getById,
-    // update
+    getUserSongs
 }
