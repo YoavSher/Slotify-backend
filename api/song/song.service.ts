@@ -38,10 +38,34 @@ async function getUserSongs(userId: number) {
     }
 }
 
+async function addLikedSong(userId: number, songId: string) {
+    try {
+        const query = `INSERT INTO usersLikedSongs (userId,songId,addedAt)
+        values(${userId},'${songId}','${Date.now()}');`
+        await sqlService.runSQL(query)
+        console.log('liking!')
+        return true
+
+    } catch (err) {
+        throw err
+    }
+}
+async function removeLikedSong(userId: number, songId: string) {
+    try {
+        const query = `DELETE FROM usersLikedSongs WHERE
+         songId='${songId}' AND userId=${userId};` // one row should be affected
+        await sqlService.runSQL(query)
+        return true
+    } catch (err) {
+        throw err
+    }
+}
 
 
 
 module.exports = {
     add,
-    getUserSongs
+    getUserSongs,
+    addLikedSong,
+    removeLikedSong
 }

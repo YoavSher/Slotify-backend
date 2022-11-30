@@ -8,7 +8,7 @@ const asyncLocalStorage = require('../../services/als.service')
 
 async function addSongs(req: Request, res: Response) {
     try {
-       
+
         const songs = req.body
         const addedSongs = await songService.add(songs)
     } catch (err) {
@@ -30,15 +30,37 @@ async function getUsersLikedSongs(req: Request, res: Response) {
 }
 
 async function likeSongByUser(req: Request, res: Response) {
-    console.log(req.body)
-    const query = `INSERT INTO usersLikedSongs (userId,songId,addedAt)
-    values(2,'_FrOQC-zEog',1111111);`
+    try {
+
+        const { videoId } = req.body
+        const { loggedinUser } = asyncLocalStorage.getStore()
+        const isLiked = await songService.addLikedSong(loggedinUser._id, videoId)
+        if (isLiked) res.json('sucsess')
+    } catch (err) {
+        logger.error('Failed to add songs', err)
+        res.status(500).send({ err: 'Failed to add songs' })
+        // maybe should do something more extreme if it fails
+    }
 }
 
+async function removeLikedSong(req: Request, res: Response) {
+    try {
+        console.log(req.params)
+        const videoId = req.params.id
+        const { loggedinUser } = asyncLocalStorage.getStore()
+        const isDeleted = await songService.removeLikedSong(loggedinUser._id, videoId)
+        if (isDeleted) res.json('succses')
+    } catch (err) {
+
+        logger.error('Failed to remove songs', err)
+        res.status(500).send({ err: 'Failed to remove songs' })
+    }
+}
 
 
 module.exports = {
     addSongs,
     getUsersLikedSongs,
-    likeSongByUser
+    likeSongByUser,
+    removeLikedSong
 }
