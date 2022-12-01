@@ -1,4 +1,4 @@
-import { Song } from "../../interfaces/song"
+import { PlaylistSong, Song } from "../../interfaces/song"
 
 const logger = require('../../services/logger.service')
 const sqlService = require('../../services/db.service')
@@ -60,8 +60,37 @@ async function removeLikedSong(userId: number, songId: string) {
         throw err
     }
 }
-    //SQLS FOR RE ORDERING A LIST WHEN THE SOURCE IS HIGHER THEN THE TARGET
-    // 
+
+
+async function getSongs(playlistId: number) {
+    try {
+        const query = `SELECT videoId,title,artist,image,duration
+        FROM playlistSongs
+        INNER JOIN songs
+        ON songs.videoId=playlistSongs.songId
+        WHERE playlistId=${playlistId};`
+
+        const playlistSongs = await sqlService.runSQL(query)
+        return playlistSongs
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function addPlaylistSong({ videoId, playlistId, idx, addedAt }: PlaylistSong) {
+    try {
+        const query = `INSERT INTO playlistSongs( playlistId, songId,idx)
+        VALUES (${playlistId},'${videoId}',${idx});`
+        await sqlService.runSQL(query)
+        console.log('added to playlist!')
+        return true
+
+    } catch (err) {
+        throw err
+    }
+}
+//SQLS FOR RE ORDERING A LIST WHEN THE SOURCE IS HIGHER THEN THE TARGET
+// 
 // UPDATE playlistSongs SET idx= idx + 1 WHERE playlistId =${currplaylistid} AND idx>=${destinationIdx} AND idx <${sourceIdx};
 // UPDATE playlistSongs SET idx = destinationIdx WHERE playlistId=1 AND songId ='1w7OgIMMRc4';
 
@@ -74,5 +103,7 @@ module.exports = {
     add,
     getUserSongs,
     addLikedSong,
-    removeLikedSong
+    removeLikedSong,
+    getSongs,
+    addPlaylistSong
 }
