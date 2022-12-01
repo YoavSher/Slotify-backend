@@ -60,6 +60,13 @@ async function removeLikedSong(userId: number, songId: string) {
         throw err
     }
 }
+    //SQLS FOR RE ORDERING A LIST WHEN THE SOURCE IS HIGHER THEN THE TARGET
+    // 
+// UPDATE playlistSongs SET idx= idx + 1 WHERE playlistId =${currplaylistid} AND idx>=${destinationIdx} AND idx <${sourceIdx};
+// UPDATE playlistSongs SET idx = destinationIdx WHERE playlistId=1 AND songId ='1w7OgIMMRc4';
+
+// UPDATE playlistSongs SET idx= idx -1  WHERE playlistId =${currplaylistid} AND idx<=${destinationIdx} AND idx >${sourceIdx};
+// UPDATE playlistSongs SET idx = destinationIdx WHERE playlistId=1 AND songId ='1w7OgIMMRc4';
 
 
 
