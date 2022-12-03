@@ -11,3 +11,9 @@ export interface Song {
     // allso we should seperate the song,name and band to diffrents keys so we could afterwards navigate to a band page for example
 }
 
+export interface PlaylistSong {
+    videoId: string,
+    playlistId: number,
+    addedAt: number,
+    idx: number
+}

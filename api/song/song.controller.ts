@@ -48,7 +48,7 @@ async function removeLikedSong(req: Request, res: Response) {
         const videoId = req.params.id
         const { loggedinUser } = asyncLocalStorage.getStore()
         const isDeleted = await songService.removeLikedSong(loggedinUser._id, videoId)
-        if (isDeleted) res.json('succses')
+        if (isDeleted) res.json('success')
     } catch (err) {
 
         logger.error('Failed to remove songs', err)
@@ -56,10 +56,37 @@ async function removeLikedSong(req: Request, res: Response) {
     }
 }
 
+async function getPlaylistSongs(req: Request, res: Response) {
+    try {
+        const playlistId = req.params.id
+        const playlistSongs = await songService.getSongs(playlistId)
+        res.json(playlistSongs)
+    } catch (err) {
+
+        logger.error('Failed to add songs', err)
+        res.status(500).send({ err: 'Failed to add songs' })
+    }
+
+}
+
+async function addPlaylistSong(req: Request, res: Response) {
+    try {
+        const playlistSong = req.body
+        console.log('req.body:', req.body)
+        const isSong = await songService.addPlaylistSong(playlistSong)
+        if (isSong) res.json('success')
+    } catch (err) {
+        logger.error('Failed to add songs', err)
+        res.status(500).send({ err: 'Failed to add songs' })
+        // maybe should do something more extreme if it fails
+    }
+}
 
 module.exports = {
     addSongs,
     getUsersLikedSongs,
     likeSongByUser,
-    removeLikedSong
+    removeLikedSong,
+    getPlaylistSongs,
+    addPlaylistSong
 }

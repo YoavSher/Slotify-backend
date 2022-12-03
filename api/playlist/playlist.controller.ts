@@ -8,6 +8,19 @@ const authService = require('../auth/auth.service')
 const asyncLocalStorage = require('../../services/als.service')
 
 
+
+async function getPlaylists(req: Request, res: Response) {
+    try {
+        const playlists = await playlistService.query()
+        res.send(playlists)
+    } catch (err) {
+        logger.error('Cannot get boards', err)
+        res.status(500).send({ err: 'Failed to get boards' })
+    }
+}
+
+
+
 async function addPlaylist(req: Request, res: Response) {
     try {
         // const playlist = req.body
@@ -23,5 +36,6 @@ async function addPlaylist(req: Request, res: Response) {
 
 
 module.exports = {
+    getPlaylists,
     addPlaylist,
 }
