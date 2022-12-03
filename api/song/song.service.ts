@@ -43,9 +43,7 @@ async function addLikedSong(userId: number, songId: string) {
         const query = `INSERT INTO usersLikedSongs (userId,songId,addedAt)
         values(${userId},'${songId}','${Date.now()}');`
         await sqlService.runSQL(query)
-        console.log('liking!')
         return true
-
     } catch (err) {
         throw err
     }
@@ -60,15 +58,15 @@ async function removeLikedSong(userId: number, songId: string) {
         throw err
     }
 }
-    //SQLS FOR RE ORDERING A LIST WHEN THE SOURCE IS HIGHER THEN THE TARGET
-    // 
+//SQLS FOR RE ORDERING A LIST WHEN THE SOURCE IS HIGHER THEN THE TARGET
+// 
 // UPDATE playlistSongs SET idx= idx + 1 WHERE playlistId =${currplaylistid} AND idx>=${destinationIdx} AND idx <${sourceIdx};
 // UPDATE playlistSongs SET idx = destinationIdx WHERE playlistId=1 AND songId ='1w7OgIMMRc4';
 
 // UPDATE playlistSongs SET idx= idx -1  WHERE playlistId =${currplaylistid} AND idx<=${destinationIdx} AND idx >${sourceIdx};
 // UPDATE playlistSongs SET idx = destinationIdx WHERE playlistId=1 AND songId ='1w7OgIMMRc4';
 
-
+// for deleting it should be 
 
 module.exports = {
     add,
