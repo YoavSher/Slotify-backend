@@ -21,7 +21,10 @@ async function add(userId: string) {
         const query = `INSERT INTO playlists (name, image, creatorId)
         VALUES ('New Playlist','https://thumbs.dreamstime.com/b/music-background-panorama-13786355.jpg',
         '${userId}')`
-        sqlService.runSQL(query)
+         await sqlService.runSQL(query)
+        const [newPlaylist] = await sqlService.runSQL(`SELECT * FROM playlists WHERE _id=LAST_INSERT_ID()`)
+        console.log('newPlaylist:', newPlaylist)
+        return newPlaylist
     } catch (err) {
         logger.error('cannot add board', err)
         throw err
