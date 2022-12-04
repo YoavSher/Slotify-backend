@@ -12,6 +12,4 @@ router.get('/user/:id', getUsersLikedSongs)  //requireAuth
 router.post('/user', likeSongByUser)  //requireAuth
 router.delete('/user/:id', removeLikedSong)  //requireAuth
 
-
-
 module.exports = router

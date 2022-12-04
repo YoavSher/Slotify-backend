@@ -59,7 +59,7 @@ async function removeLikedSong(req: Request, res: Response) {
 async function getPlaylistSongs(req: Request, res: Response) {
     try {
         const playlistId = req.params.id
-        const playlistSongs = await songService.getSongs(playlistId)
+        const playlistSongs = await songService.getPlaylistSongs(playlistId)
         res.json(playlistSongs)
     } catch (err) {
 

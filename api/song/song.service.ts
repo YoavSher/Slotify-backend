@@ -29,7 +29,8 @@ async function getUserSongs(userId: number) {
         FROM usersLikedSongs
         INNER JOIN songs
         ON songs.videoId=usersLikedSongs.songId
-        WHERE userId=${userId};`
+        WHERE userId=${userId}
+        ORDER BY addedAt DESC;`
 
         const likedSongs = await sqlService.runSQL(query)
         return likedSongs
@@ -60,7 +61,7 @@ async function removeLikedSong(userId: number, songId: string) {
 }
 
 
-async function getSongs(playlistId: number) {
+async function getPlaylistSongs(playlistId: number) {
     try {
         const query = `SELECT videoId,title,artist,image,duration
         FROM playlistSongs
@@ -102,6 +103,6 @@ module.exports = {
     getUserSongs,
     addLikedSong,
     removeLikedSong,
-    getSongs,
+    getPlaylistSongs,
     addPlaylistSong
 }
