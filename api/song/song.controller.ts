@@ -12,7 +12,7 @@ async function addSongs(req: Request, res: Response) {
         const songs = req.body
         const addedSongs = await songService.add(songs)
     } catch (err) {
-        logger.error('Failed to add board', err)
+        logger.error('Failed to add songs', err)
         res.status(500).send({ err: 'Failed to add songs' })
     }
 }
@@ -39,7 +39,6 @@ async function likeSongByUser(req: Request, res: Response) {
     } catch (err) {
         logger.error('Failed to add songs', err)
         res.status(500).send({ err: 'Failed to add songs' })
-        // maybe should do something more extreme if it fails
     }
 }
 
