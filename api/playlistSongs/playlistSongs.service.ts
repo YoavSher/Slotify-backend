@@ -48,6 +48,42 @@ async function deleteFromPlaylist(playlistId: number, songId: string, idx: numbe
         throw err
     }
 }
+interface reIndexInfo {
+    playlistId: number,
+    videoId: string,
+    sourceIdx: number,
+    destinationIdx: number
+}
+async function reIndex(reIndexInfo: reIndexInfo) {
+    const { playlistId, videoId, sourceIdx, destinationIdx } = reIndexInfo
+    try {
+        if (sourceIdx > destinationIdx) {
+            const incrementIdxsQuery = `UPDATE playlistSongs
+             SET idx= idx + 1 
+             WHERE playlistId =${playlistId}
+              AND idx>=${destinationIdx}
+               AND idx <${sourceIdx};`
+            await sqlService.runSQL(incrementIdxsQuery)
+        } else {
+            const decrementIdxsQuery = `UPDATE playlistSongs 
+            SET idx= idx -1 
+            WHERE playlistId =${playlistId}
+            AND idx<=${destinationIdx}
+            AND idx >${sourceIdx}`
+            await sqlService.runSQL(decrementIdxsQuery)
+        }
+        const moveSongQuery = `UPDATE playlistSongs
+           SET idx = ${destinationIdx}
+           WHERE playlistId=${playlistId} 
+           AND songId ='${videoId}';
+           `
+        await sqlService.runSQL(moveSongQuery)
+        console.log('added to playlist!')
+        return true
+    } catch (err) {
+        throw err
+    }
+}
 //SQLS FOR RE ORDERING A LIST WHEN THE SOURCE IS HIGHER THEN THE TARGET
 // 
 // UPDATE playlistSongs SET idx= idx + 1 WHERE playlistId =${currplaylistid} AND idx>=${destinationIdx} AND idx <${sourceIdx};
@@ -61,5 +97,6 @@ async function deleteFromPlaylist(playlistId: number, songId: string, idx: numbe
 module.exports = {
     getSongs,
     addPlaylistSong,
-    deleteFromPlaylist
+    deleteFromPlaylist,
+    reIndex
 }

@@ -45,8 +45,22 @@ async function removeFromPlaylist(req: Request, res: Response) {
     }
 }
 
+async function reIndexSongs(req: Request, res: Response) {
+    try {
+        
+        // console.log('req.body:', req.body)
+        const isReOrdered = await songService.reIndex( req.body)
+        if (isReOrdered) res.json('success')
+    } catch (err) {
+
+        logger.error('Failed to reIndex', err)
+        res.status(500).send({ err: 'Failed to reIndex' })
+    }
+}
+
 module.exports = {
     getPlaylistSongs,
     addPlaylistSong,
-    removeFromPlaylist
+    removeFromPlaylist,
+    reIndexSongs
 }
