@@ -1,5 +1,6 @@
 const authService = require('./auth.service')
 const logger = require('../../services/logger.service')
+const asyncLocalStorage = require('../../services/als.service')
 export { }
 
 import { Request, Response } from 'express';
@@ -47,8 +48,19 @@ async function logout(req: Request, res: Response) {
     }
 }
 
+async function validateCookie(req: Request, res: Response) {
+    console.log('getting to the backend')
+    try {
+        const { loggedinUser } = asyncLocalStorage.getStore()
+        if (loggedinUser) res.json(loggedinUser)
+    } catch (err) {
+        res.status(500).send({ err: 'no cookie' })
+    }
+}
+
 module.exports = {
     login,
     signup,
-    logout
+    logout,
+    validateCookie
 }
