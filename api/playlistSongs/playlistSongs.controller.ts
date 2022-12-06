@@ -34,9 +34,9 @@ async function addPlaylistSong(req: Request, res: Response) {
 
 async function removeFromPlaylist(req: Request, res: Response) {
     try {
-        console.log('req.params: ', req.params)
-        const { playlistId, songId } = req.params
-        const isDeleted = await songService.deleteFromPlaylist(playlistId, songId)
+        // console.log('req.body: ', req.body)
+
+        const isDeleted = await songService.deleteFromPlaylist(req.body)
         if (isDeleted) res.json('success')
     } catch (err) {
 
@@ -47,9 +47,9 @@ async function removeFromPlaylist(req: Request, res: Response) {
 
 async function reIndexSongs(req: Request, res: Response) {
     try {
-        
+
         // console.log('req.body:', req.body)
-        const isReOrdered = await songService.reIndex( req.body)
+        const isReOrdered = await songService.reIndex(req.body)
         if (isReOrdered) res.json('success')
     } catch (err) {
 

@@ -6,7 +6,7 @@ const sqlService = require('../../services/db.service')
 
 
 async function add(songs: Song[]) {
-    console.log('songs:', songs)
+    // console.log('songs:', songs)
     try {
         songs.forEach(async ({ videoId, duration, image, artist, title }) => {
             try {

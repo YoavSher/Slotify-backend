@@ -5,8 +5,8 @@ const sqlService = require('../../services/db.service')
 
 async function add({ username, password, fullName, email }: NewUser) {
     try {
-        const query = `INSERT INTO users (username,fullName,password,email) 
-        VALUES ("${username}","${fullName}","${password}","${email}")`
+        const query = `INSERT INTO users (username,fullName,email,password) 
+        VALUES ("${username}","${fullName}","${email}","${password}")`
         await sqlService.runSQL(query)
         return true
     } catch (err) {

@@ -2,11 +2,15 @@
 var mysql = require('mysql')
 
 var connection = mysql.createConnection({
-    host: 'slotify-db.cu4bexvkovko.eu-central-1.rds.amazonaws.com',
+    // host: 'slotify-db.cu4bexvkovko.eu-central-1.rds.amazonaws.com',
+    host: 'sql8.freesqldatabase.com',
     port: 3306,
-    user: 'yoavroni',
-    password: 'yoavroni',
-    database: 'slotify_db',
+    // user: 'yoavroni',
+    user: 'sql8582751',
+    // password: 'yoavroni',
+    password: '2G1a2nz3Kh',
+    // database: 'slotify_db',
+    database: 'sql8582751',
     // database: 'test',
     insecureAuth: true
 })

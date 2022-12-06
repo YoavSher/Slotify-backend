@@ -5,7 +5,9 @@ const sqlService = require('../../services/db.service')
 
 async function query() {
     try {
-        const query = `SELECT * FROM playlists`
+        const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
+        INNER JOIN users
+        ON users._id = playlists.creatorId`
         const playlists = await sqlService.runSQL(query)
         return playlists
     } catch (err) {

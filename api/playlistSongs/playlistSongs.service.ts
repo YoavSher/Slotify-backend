@@ -33,16 +33,21 @@ async function addPlaylistSong({ videoId, playlistId, idx, addedAt }: PlaylistSo
     }
 }
 
-
-async function deleteFromPlaylist(playlistId: number, songId: string, idx: number) {
+interface removedSong {
+    videoId: string,
+    playlistId: number,
+    idx: number
+}
+async function deleteFromPlaylist(removedSong: removedSong) {
     try {
-        let query = `DELETE FROM playlistSongs WHERE
-         songId='${songId}' AND playlistId=${playlistId}` // one row should be affected
-        await sqlService.runSQL(query)
-        // query = `UPDATE playlistSongs
-        //  SET idx = idx - 1
-        //  WHERE playlistId = ${playlistId} AND idx >= 3` // one row should be affected
-        // await sqlService.runSQL(query)
+        const { videoId, playlistId, idx } = removedSong
+        const deleteQuery = `DELETE FROM playlistSongs WHERE
+         songId='${videoId}' AND playlistId=${playlistId}` // one row should be affected
+        await sqlService.runSQL(deleteQuery)
+        const updateSongsIdxQuery = `UPDATE playlistSongs
+         SET idx = idx - 1
+         WHERE playlistId = ${playlistId} AND idx > ${idx}` // one row should be affected
+        await sqlService.runSQL(updateSongsIdxQuery)
         return true
     } catch (err) {
         throw err
