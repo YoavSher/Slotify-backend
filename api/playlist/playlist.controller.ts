@@ -34,8 +34,32 @@ async function addPlaylist(req: Request, res: Response) {
     }
 }
 
+async function updatePlaylist(req: Request, res: Response) {
+    try {
+        const playlist = req.body
+        // console.log('playlist:', playlist)
+        await playlistService.update(playlist)
+        // res.json(addedPlaylist)
+    } catch (err) {
+        logger.error('Failed to update playlist', err)
+        res.status(500).send({ err: 'Failed to update playlist' })
+    }
+}
+
+async function removePlaylist(req: Request, res: Response){
+    try {
+        const playlistId = req.params.id
+        const removedId = await playlistService.remove(playlistId)
+        res.send(removedId)
+    } catch (err) {
+        logger.error('Failed to remove playlist', err)
+        res.status(500).send({ err: 'Failed to remove playlist' })
+    }
+}
 
 module.exports = {
     getPlaylists,
     addPlaylist,
+    updatePlaylist,
+    removePlaylist
 }

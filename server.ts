@@ -24,6 +24,8 @@ if (process.env.NODE_ENV === 'production') {
 const playlistRoutes = require('./api/playlist/playlist.routes')
 const songRoutes = require('./api/song/song.routes')
 const userRoutes = require('./api/user/user.routes')
+const userSongsRoutes = require('./api/userSongs/userSongs.routes')
+const playlistSongsRoutes = require('./api/playlistSongs/playlistSongs.routes')
 const authRoutes = require('./api/auth/auth.routes')
 const { setupSocketAPI } = require('./services/socket.service')
 
@@ -34,6 +36,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/playlist', playlistRoutes)
 app.use('/api/song', songRoutes)
+app.use('/api/song/user', userSongsRoutes)
+app.use('/api/song/playlist', playlistSongsRoutes)
 setupSocketAPI(http)
 
 
