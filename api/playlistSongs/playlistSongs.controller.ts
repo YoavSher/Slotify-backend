@@ -22,9 +22,9 @@ async function getPlaylistSongs(req: Request, res: Response) {
 async function addPlaylistSong(req: Request, res: Response) {
     try {
         const playlistSong = req.body
-        console.log('req.body:', req.body)
         const isSong = await songService.addPlaylistSong(playlistSong)
         if (isSong) res.json('success')
+        else throw new Error('Cannot add song,try again later')
     } catch (err) {
         logger.error('Failed to add songs', err)
         res.status(500).send({ err: 'Failed to add songs' })
@@ -34,8 +34,6 @@ async function addPlaylistSong(req: Request, res: Response) {
 
 async function removeFromPlaylist(req: Request, res: Response) {
     try {
-        // console.log('req.body: ', req.body)
-
         const isDeleted = await songService.deleteFromPlaylist(req.body)
         if (isDeleted) res.json('success')
     } catch (err) {

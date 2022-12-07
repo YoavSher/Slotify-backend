@@ -6,7 +6,7 @@ const sqlService = require('../../services/db.service')
 
 async function getSongs(playlistId: number) {
     try {
-        const query = `SELECT videoId,title,artist,image,duration,idx
+        const query = `SELECT videoId,title,artist,image,duration,addedAt
         FROM playlistSongs
         INNER JOIN songs
         ON songs.videoId=playlistSongs.songId
@@ -22,12 +22,10 @@ async function getSongs(playlistId: number) {
 
 async function addPlaylistSong({ videoId, playlistId, idx, addedAt }: PlaylistSong) {
     try {
-        const query = `INSERT INTO playlistSongs( playlistId, songId,idx)
-        VALUES (${playlistId},'${videoId}',${idx});`
+        const query = `INSERT INTO playlistSongs( playlistId, songId,addedAt,idx)
+                VALUES (${playlistId},'${videoId}','${addedAt}',${idx});`
         await sqlService.runSQL(query)
-        console.log('added to playlist!')
         return true
-
     } catch (err) {
         throw err
     }
@@ -40,19 +38,22 @@ interface removedSong {
 }
 async function deleteFromPlaylist(removedSong: removedSong) {
     try {
+
         const { videoId, playlistId, idx } = removedSong
-        const deleteQuery = `DELETE FROM playlistSongs WHERE
-         songId='${videoId}' AND playlistId=${playlistId}` // one row should be affected
-        await sqlService.runSQL(deleteQuery)
+        
         const updateSongsIdxQuery = `UPDATE playlistSongs
-         SET idx = idx - 1
-         WHERE playlistId = ${playlistId} AND idx > ${idx}` // one row should be affected
+        SET idx = idx - 1
+        WHERE playlistId = ${playlistId} AND idx > ${idx - 1}`
         await sqlService.runSQL(updateSongsIdxQuery)
+        const deleteQuery = `DELETE FROM playlistSongs WHERE
+        songId='${videoId}' AND playlistId=${playlistId}`
+        sqlService.runSQL(deleteQuery)
         return true
     } catch (err) {
         throw err
     }
 }
+
 interface reIndexInfo {
     playlistId: number,
     videoId: string,
@@ -83,7 +84,7 @@ async function reIndex(reIndexInfo: reIndexInfo) {
            AND songId ='${videoId}';
            `
         await sqlService.runSQL(moveSongQuery)
-        console.log('added to playlist!')
+
         return true
     } catch (err) {
         throw err
