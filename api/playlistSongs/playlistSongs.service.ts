@@ -24,8 +24,8 @@ async function addPlaylistSong({ videoId, playlistId, idx, addedAt }: PlaylistSo
     try {
         const query = `INSERT INTO playlistSongs( playlistId, songId,addedAt,idx)
                 VALUES (${playlistId},'${videoId}','${addedAt}',${idx});`
-        await sqlService.runSQL(query)
-        return true
+        const action = await sqlService.runSQL(query)
+        return action.affectedRows === 1
     } catch (err) {
         throw err
     }
@@ -36,11 +36,12 @@ interface removedSong {
     playlistId: number,
     idx: number
 }
-async function deleteFromPlaylist(removedSong: removedSong) {
+
+async function removeFromPlaylist(removedSong: removedSong) {
     try {
 
         const { videoId, playlistId, idx } = removedSong
-        
+
         const updateSongsIdxQuery = `UPDATE playlistSongs
         SET idx = idx - 1
         WHERE playlistId = ${playlistId} AND idx > ${idx - 1}`
@@ -48,7 +49,7 @@ async function deleteFromPlaylist(removedSong: removedSong) {
         const deleteQuery = `DELETE FROM playlistSongs WHERE
         songId='${videoId}' AND playlistId=${playlistId}`
         sqlService.runSQL(deleteQuery)
-        return true
+        return true // do something with the returning packet
     } catch (err) {
         throw err
     }
@@ -103,6 +104,6 @@ async function reIndex(reIndexInfo: reIndexInfo) {
 module.exports = {
     getSongs,
     addPlaylistSong,
-    deleteFromPlaylist,
+    removeFromPlaylist,
     reIndex
 }

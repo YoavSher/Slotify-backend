@@ -1,7 +1,7 @@
 import { Playlist } from "../../interfaces/playlist"
 const logger = require('../../services/logger.service')
 const sqlService = require('../../services/db.service')
-
+const usersPlaylistsService = require('../userPlaylists/userPlaylists.service')
 
 async function query() {
     try {
@@ -26,6 +26,8 @@ async function add(userId: string) {
         await sqlService.runSQL(query)
         const [newPlaylist] = await sqlService.runSQL(`SELECT * FROM playlists WHERE _id=LAST_INSERT_ID()`)
         console.log('newPlaylist:', newPlaylist)
+        const { _id, creatorId } = newPlaylist
+        await usersPlaylistsService.addLikedPlaylist(creatorId, _id)
         return newPlaylist
     } catch (err) {
         logger.error('cannot add playlist', err)

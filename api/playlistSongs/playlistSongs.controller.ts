@@ -34,8 +34,9 @@ async function addPlaylistSong(req: Request, res: Response) {
 
 async function removeFromPlaylist(req: Request, res: Response) {
     try {
-        const isDeleted = await songService.deleteFromPlaylist(req.body)
+        const isDeleted = await songService.removeFromPlaylist(req.body)
         if (isDeleted) res.json('success')
+        else throw new Error('Cannot delete song,try again later')
     } catch (err) {
 
         logger.error('Failed to remove song', err)

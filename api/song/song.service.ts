@@ -14,7 +14,7 @@ async function add(songs: Song[]) {
 
                 await sqlService.runSQL(query)
             } catch (err) {
-                logger.error('song already exists', err)
+                // logger.error('song already exists', err)
             }
         })
     } catch (err) {
