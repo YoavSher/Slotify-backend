@@ -1,6 +1,5 @@
 import { PlaylistSong, Song } from "../../interfaces/song"
 
-const logger = require('../../services/logger.service')
 const sqlService = require('../../services/db.service')
 
 
@@ -27,6 +26,7 @@ async function addPlaylistSong({ videoId, playlistId, idx, addedAt }: PlaylistSo
         const action = await sqlService.runSQL(query)
         return action.affectedRows === 1
     } catch (err) {
+        
         throw err
     }
 }

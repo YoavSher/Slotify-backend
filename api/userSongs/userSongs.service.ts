@@ -12,6 +12,7 @@ async function getUserSongs(userId: number) {
         INNER JOIN songs
         ON songs.videoId=usersLikedSongs.songId
         WHERE userId=${userId};`
+        
 
         const likedSongs = await sqlService.runSQL(query)
         return likedSongs
@@ -33,7 +34,7 @@ async function addLikedSong(userId: number, songId: string) {
 async function removeLikedSong(userId: number, songId: string) {
     try {
         const query = `DELETE FROM usersLikedSongs WHERE
-         songId='${songId}' AND userId=${userId};` // one row should be affected
+         songId='${songId}' AND userId=${userId};` 
         await sqlService.runSQL(query)
         return true
     } catch (err) {
