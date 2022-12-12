@@ -63,11 +63,29 @@ async function remove(playlistId: number) {
     }
 }
 
+async function searchPlaylists(searchTerm: string) {
+    try {
+
+        const query = `SELECT playlists._id,playlists.name,playlists.image,playlists.creatorId FROM playlistSongs
+        INNER JOIN songs
+        ON songs.videoId=playlistSongs.songId
+        INNER JOIN playlists
+        ON playlists._id = playlistSongs.playlistId
+        WHERE artist LIKE '%${searchTerm}%'`
+        const playlist = await sqlService.runSQL(query)
+        console.log('playlist:', playlist)
+        return playlist
+    } catch (err) {
+        logger.error('cannot get searched playlist', err)
+        throw err
+    }
+}
 
 module.exports = {
     query,
     remove,
     add,
+    searchPlaylists,
     // getById,
     update
 }
