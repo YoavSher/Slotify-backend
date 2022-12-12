@@ -41,17 +41,22 @@ async function removeLikedPlaylist(userId: number, playlistId: number) {
     }
 }
 
+interface RecentPlaylist {
+    addedAt: string,
+    userId: number,
+    playlistId: number
+}
+
 async function addToRecentlyPlayed(userId: number, playlistId: number) {
     try {
         let query = `SELECT * FROM recentlyPlayedPlaylists WHERE userId=${userId};`
         let toRemove = false
-        const recentlyPlayed = await sqlService.runSQL(query)
-        const currPlaylist = recentlyPlayed.find((playlist: any) => playlist.playlistId === playlistId) // make it not any.
+        const recentlyPlayed = await sqlService.runSQL(query) as RecentPlaylist[]
+        const currPlaylist = recentlyPlayed.find((playlist) => playlist.playlistId === playlistId) // make it not any.
         if (currPlaylist) {
             query = `UPDATE recentlyPlayedPlaylists SET addedAt='${Date.now()}'
              WHERE playlistId=${playlistId} AND userId=${userId};`
             if (recentlyPlayed.length > 6) toRemove = true
-            // if i am updating there is no chance i should have to remove
         } else {
             query = `INSERT INTO recentlyPlayedPlaylists(playlistId, userId, addedAt)
             values(${playlistId},${userId}, '${Date.now()}');`
@@ -59,12 +64,12 @@ async function addToRecentlyPlayed(userId: number, playlistId: number) {
         }
         await sqlService.runSQL(query)
         if (toRemove) {
-            let addedFirst = { addedAt: Infinity, userId: 0, playlistId: 0 }
-            recentlyPlayed.forEach((playlist: any) => {
+            let addedFirst = { addedAt: 'Infinity', userId: 0, playlistId: 0 }
+            recentlyPlayed.forEach((playlist) => {
                 if (+playlist.addedAt < +addedFirst.addedAt) addedFirst = playlist
             })
             query = `DELETE FROM recentlyPlayedPlaylists 
-            WHERE userId=${addedFirst.userId} and playlistId=${addedFirst.playlistId}`
+            WHERE userId=${userId} and playlistId=${addedFirst.playlistId}`
             await sqlService.runSQL(query)
         }
     } catch (err) {
@@ -74,17 +79,21 @@ async function addToRecentlyPlayed(userId: number, playlistId: number) {
 
 async function getUserRecentPlaylists(userId: number) {
     try {
-        const query = `SELECT _id,name,image,creatorId
+        const query = `SELECT playlistId AS _id,name,image,creatorId,fullName
         FROM recentlyPlayedPlaylists
-        INNER JOIN playlists
+        JOIN playlists
         ON playlists._id=recentlyPlayedPlaylists.playlistId
-        WHERE userId=${userId};`
+        JOIN users
+        ON users._id =recentlyPlayedPlaylists.userId
+        WHERE userId=${userId}
+        ORDER BY addedAt DESC;`
         const recentPlaylists = await sqlService.runSQL(query)
         return recentPlaylists
     } catch (err) {
         console.log(err)
     }
 }
+
 
 
 module.exports = {
