@@ -46,7 +46,7 @@ async function updatePlaylist(req: Request, res: Response) {
     }
 }
 
-async function removePlaylist(req: Request, res: Response){
+async function removePlaylist(req: Request, res: Response) {
     try {
         const playlistId = req.params.id
         const removedId = await playlistService.remove(playlistId)
@@ -57,9 +57,23 @@ async function removePlaylist(req: Request, res: Response){
     }
 }
 
+async function getSearchedPlaylist(req: Request, res: Response) {
+    try {
+        console.log('req.params:', req.params)
+        const { searchTerm } = req.params
+        const playlist = await playlistService.searchPlaylists(searchTerm)
+        // console.log('playlist:', playlist)
+        res.send(playlist)
+    } catch (err) {
+        logger.error('Failed to get playlists', err)
+        res.status(500).send({ err: 'Failed to get playlists' })
+    }
+}
+
 module.exports = {
     getPlaylists,
     addPlaylist,
     updatePlaylist,
-    removePlaylist
+    removePlaylist,
+    getSearchedPlaylist
 }
