@@ -60,8 +60,8 @@ async function removePlaylist(req: Request, res: Response) {
 async function getSearchedPlaylist(req: Request, res: Response) {
     try {
         console.log('req.params:', req.params)
-        const { searchTerm } = req.params
-        const playlist = await playlistService.searchPlaylists(searchTerm)
+        const { searchTerm, songsIds } = req.params
+        const playlist = await playlistService.searchPlaylists(songsIds, searchTerm)
         // console.log('playlist:', playlist)
         res.send(playlist)
     } catch (err) {

@@ -8,7 +8,7 @@ const { addPlaylist, getPlaylists, updatePlaylist, removePlaylist, getSearchedPl
 
 
 router.get('/', getPlaylists)  //requireAuth
-router.get('/:searchTerm', getSearchedPlaylist)
+router.get('/:searchTerm/:songsIds', getSearchedPlaylist)
 router.post('/', requireAuth, addPlaylist)  //requireAuth
 router.put('/:id', requireAuth, updatePlaylist)  //requireAuth
 router.delete('/:id', requireAuth, removePlaylist)

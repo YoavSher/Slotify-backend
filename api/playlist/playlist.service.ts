@@ -63,15 +63,17 @@ async function remove(playlistId: number) {
     }
 }
 
-async function searchPlaylists(searchTerm: string) {
-    try {
 
-        const query = `SELECT playlists._id,playlists.name,playlists.image,playlists.creatorId FROM playlistSongs
-        INNER JOIN songs
-        ON songs.videoId=playlistSongs.songId
+async function searchPlaylists(songsId: string, searchTerm: string) {
+    try {
+        const songsIds = songsId.split(',')
+        let query = `SELECT DISTINCT _id,name,image,creatorId FROM playlistSongs
         INNER JOIN playlists
         ON playlists._id = playlistSongs.playlistId
-        WHERE artist LIKE '%${searchTerm}%'`
+        WHERE name LIKE '%${searchTerm}%'`
+        let idsStr = ''
+        songsIds.forEach(id => idsStr += ` OR songId = '${id}'`)
+        query += idsStr
         const playlist = await sqlService.runSQL(query)
         console.log('playlist:', playlist)
         return playlist

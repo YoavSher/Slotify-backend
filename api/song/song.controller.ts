@@ -15,6 +15,19 @@ async function addSongs(req: Request, res: Response) {
     }
 }
 
+async function getSearchedSongs(req: Request, res: Response) {
+    try {
+        // console.log('params:', req.params)
+        const { searchTerm } = req.params
+        const songs = await songService.getSearchedSongs(searchTerm)
+        res.send(songs)
+    } catch (err) {
+        logger.error('Failed to get searched songs', err)
+        res.status(500).send({ err: 'Failed to get searched songs' })
+    }
+}
+
 module.exports = {
     addSongs,
+    getSearchedSongs
 }
