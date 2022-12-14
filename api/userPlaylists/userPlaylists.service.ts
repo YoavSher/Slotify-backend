@@ -7,12 +7,15 @@ const sqlService = require('../../services/db.service')
 
 async function getUserPlaylists(userId: number) {
     try {
-        const query = `SELECT _id,name,image,creatorId
+        const query = `SELECT playlistId AS _id,name,image,creatorId,fullName
         FROM usersLikedPlaylists
-        INNER JOIN playlists
+        JOIN playlists
         ON playlists._id=usersLikedPlaylists.playlistId
+        JOIN users
+        ON users._id =usersLikedPlaylists.userId
         WHERE userId=${userId};`
         const playlists = await sqlService.runSQL(query)
+        console.log(playlists)
         return playlists
     } catch (err) {
         console.log(err)
@@ -76,6 +79,8 @@ async function addToRecentlyPlayed(userId: number, playlistId: number) {
         throw err
     }
 }
+
+
 
 async function getUserRecentPlaylists(userId: number) {
     try {
