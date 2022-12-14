@@ -2,6 +2,7 @@ import { Playlist } from "../../interfaces/playlist"
 const logger = require('../../services/logger.service')
 const sqlService = require('../../services/db.service')
 const usersPlaylistsService = require('../userPlaylists/userPlaylists.service')
+const playlistSongsService = require('../playlistSongs/playlistSongs.service')
 
 async function query() {
     try {
@@ -15,6 +16,21 @@ async function query() {
         throw err
     }
 
+}
+
+async function getById(id: number) {
+    try {
+        const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
+        INNER JOIN users
+        ON users._id = playlists.creatorId
+        WHERE playlists._id = ${id}`
+        const [playlist] = await sqlService.runSQL(query)
+        const songs = await playlistSongsService.getSongs(id)
+        return { playlist, songs }
+    } catch (err) {
+        logger.error('cannot find playlist', err)
+        throw err
+    }
 }
 
 async function add(userId: string) {
@@ -54,9 +70,24 @@ async function remove(playlistId: number) {
     try {
         // console.log('playlist:', playlist)
 
-        const query = `DELETE FROM playlists 
+        const deleteUserPlaylistQuery = `DELETE FROM usersLikedPlaylists WHERE
+        playlistId=${playlistId}`
+        await sqlService.runSQL(deleteUserPlaylistQuery)
+
+        const deleteRecentPlaylistQuery = `DELETE FROM recentlyPlayedPlaylists 
+        WHERE playlistId=${playlistId}`
+
+        await sqlService.runSQL(deleteRecentPlaylistQuery)
+
+        const deleteSongPlaylistQuery = `DELETE FROM playlistSongs WHERE
+        playlistId=${playlistId}`
+        await sqlService.runSQL(deleteSongPlaylistQuery)
+
+        const deletePlaylistsQuery = `DELETE FROM playlists 
                         WHERE _id = ${playlistId}`
-        await sqlService.runSQL(query)
+        const queryInfo = await sqlService.runSQL(deletePlaylistsQuery)
+        return queryInfo.affectedRows === 1
+
     } catch (err) {
         logger.error('cannot delete playlist', err)
         throw err
@@ -88,6 +119,6 @@ module.exports = {
     remove,
     add,
     searchPlaylists,
-    // getById,
+    getById,
     update
 }

@@ -33,13 +33,13 @@ const { setupSocketAPI } = require('./services/socket.service')
 // routes
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware')
 app.all('*', setupAsyncLocalStorage)
+app.use('/api/song/playlist', playlistSongsRoutes)
+app.use('/api/playlist/user', userPlaylistRoutes)
+app.use('/api/song/user', userSongsRoutes)
+app.use('/api/playlist', playlistRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
-app.use('/api/playlist', playlistRoutes)
-app.use('/api/playlist/user', userPlaylistRoutes)
 app.use('/api/song', songRoutes)
-app.use('/api/song/user', userSongsRoutes)
-app.use('/api/song/playlist', playlistSongsRoutes)
 setupSocketAPI(http)
 
 
