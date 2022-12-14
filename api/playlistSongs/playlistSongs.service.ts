@@ -49,11 +49,12 @@ async function removeFromPlaylist(removedSong: removedSong) {
         const deleteQuery = `DELETE FROM playlistSongs WHERE
         songId='${videoId}' AND playlistId=${playlistId}`
         sqlService.runSQL(deleteQuery)
-        return true // do something with the returning packet
+        return true 
     } catch (err) {
         throw err
     }
 }
+
 
 interface reIndexInfo {
     playlistId: number,
@@ -91,15 +92,7 @@ async function reIndex(reIndexInfo: reIndexInfo) {
         throw err
     }
 }
-//SQLS FOR RE ORDERING A LIST WHEN THE SOURCE IS HIGHER THEN THE TARGET
-// 
-// UPDATE playlistSongs SET idx= idx + 1 WHERE playlistId =${currplaylistid} AND idx>=${destinationIdx} AND idx <${sourceIdx};
-// UPDATE playlistSongs SET idx = destinationIdx WHERE playlistId=1 AND songId ='1w7OgIMMRc4';
 
-// UPDATE playlistSongs SET idx= idx -1  WHERE playlistId =${currplaylistid} AND idx<=${destinationIdx} AND idx >${sourceIdx};
-// UPDATE playlistSongs SET idx = destinationIdx WHERE playlistId=1 AND songId ='1w7OgIMMRc4';
-
-// for deleting it should be 
 
 module.exports = {
     getSongs,
