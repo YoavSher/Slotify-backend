@@ -9,7 +9,8 @@ const http = require('http').createServer(app);
 // Express App Config
 app.use(cookieParser());
 app.use(express.json());
-    app.use(express.static(path.resolve(__dirname, 'public')));
+
+app.use(express.static(path.resolve(__dirname, 'public')));
 
 const playlistRoutes = require('./api/playlist/playlist.routes');
 const songRoutes = require('./api/song/song.routes');
