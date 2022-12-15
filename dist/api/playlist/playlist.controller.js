@@ -31,6 +31,7 @@ function getPlaylistById(req, res) {
             // console.log('req.params:', req.params)
             const { id } = req.params;
             const fullPlaylist = yield playlistService.getById(id);
+            console.log('fullPlaylist:', fullPlaylist.playlist);
             res.send(fullPlaylist);
         }
         catch (err) {

@@ -18,7 +18,8 @@ function query() {
         try {
             const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
         INNER JOIN users
-        ON users._id = playlists.creatorId`;
+        ON users._id = playlists.creatorId
+        LIMIT 35`;
             const playlists = yield sqlService.runSQL(query);
             return playlists;
         }
@@ -72,7 +73,8 @@ function update(playlist) {
             const query = `UPDATE playlists 
             SET name = '${name}', image='${image}'
             WHERE _id = ${_id}`;
-            yield sqlService.runSQL(query);
+            const updatedPlaylist = yield sqlService.runSQL(query);
+            console.log('updatedPlaylist:', updatedPlaylist);
         }
         catch (err) {
             logger.error('cannot update playlist', err);

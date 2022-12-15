@@ -21,8 +21,8 @@ function getUsersLikedPlaylists(req, res) {
             res.json(likedPlaylists);
         }
         catch (err) {
-            logger.error('Failed to add Playlists', err);
-            res.status(500).send({ err: 'Failed to add Playlists' });
+            logger.error('Failed to get user Playlists', err);
+            res.status(500).send({ err: 'Failed to get user Playlists' });
         }
     });
 }

@@ -9,7 +9,7 @@ const http = require('http').createServer(app);
 // Express App Config
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, 'public')));
+    app.use(express.static(path.resolve(__dirname, 'public')));
 
 const playlistRoutes = require('./api/playlist/playlist.routes');
 const songRoutes = require('./api/song/song.routes');
@@ -30,9 +30,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/song', songRoutes);
 setupSocketAPI(http);
-// app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
-// })
+app.get('/**', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 const logger = require('./services/logger.service');
 const port = process.env.PORT || 3030;
 http.listen(port, () => {
