@@ -43,9 +43,9 @@ app.use('/api/song', songRoutes)
 setupSocketAPI(http)
 
 
-// app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
-// })
+app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 
 
 const logger = require('./services/logger.service')
