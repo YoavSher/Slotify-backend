@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set NODE_ENV=development&&nodemon server.ts",
+    "tsc": "tsc",
+    "start:prod": "node dist/server.js",
     "server:dev": "set NODE_ENV=development&&nodemon server.ts",
     "server:prod": "set NODE_ENV=production&&node server.ts"
   },
