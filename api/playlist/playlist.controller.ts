@@ -24,6 +24,7 @@ async function getPlaylistById(req: Request, res: Response) {
         // console.log('req.params:', req.params)
         const { id } = req.params
         const fullPlaylist = await playlistService.getById(id)
+        console.log('fullPlaylist:', fullPlaylist.playlist)
         res.send(fullPlaylist)
     } catch (err) {
         logger.error('Cannot get playlist', err)
@@ -80,11 +81,25 @@ async function getSearchedPlaylist(req: Request, res: Response) {
     }
 }
 
+async function getGenrePlaylists(req: Request, res: Response){
+    try {
+        console.log('req.params:', req.params)
+        const { genre } = req.params
+        const playlists = await playlistService.getGenrePlaylists(genre)
+        // // console.log('playlist:', playlist)
+        res.send(playlists)
+    } catch (err) {
+        logger.error('Failed to get genre playlists', err)
+        res.status(500).send({ err: 'Failed to get genre playlists' })
+    }
+}
+
 module.exports = {
     getPlaylists,
     getPlaylistById,
     addPlaylist,
     updatePlaylist,
     removePlaylist,
-    getSearchedPlaylist
+    getSearchedPlaylist,
+    getGenrePlaylists
 }

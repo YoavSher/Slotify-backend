@@ -58,7 +58,8 @@ async function update(playlist: Playlist) {
         const query = `UPDATE playlists 
             SET name = '${name}', image='${image}'
             WHERE _id = ${_id}`
-        await sqlService.runSQL(query)
+        const updatedPlaylist = await sqlService.runSQL(query)
+        console.log('updatedPlaylist:', updatedPlaylist)
     } catch (err) {
         logger.error('cannot update playlist', err)
         throw err
@@ -114,11 +115,30 @@ async function searchPlaylists(songsId: string, searchTerm: string) {
     }
 }
 
+async function getGenrePlaylists(genre: string) {
+    try {
+
+        const query = `SELECT playlistId AS _id,name,image,creatorId,fullName FROM genrePlaylists
+        INNER JOIN playlists
+        ON genrePlaylists.playlistId = playlists._id
+        INNER JOIN users
+        ON users._id = playlists.creatorId
+        WHERE genre = '${genre.toLocaleLowerCase()}'`
+        const playlists = await sqlService.runSQL(query)
+        // console.log('playlist:', playlists)
+        return playlists
+    } catch (err) {
+        logger.error('cannot get genre playlists', err)
+        throw err
+    }
+}
+
 module.exports = {
     query,
     remove,
     add,
     searchPlaylists,
     getById,
-    update
+    update,
+    getGenrePlaylists
 }

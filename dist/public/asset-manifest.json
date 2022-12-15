@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b35d00ea.css",
+    "main.js": "/static/js/main.9a960b8e.js",
+    "static/media/Spotify-Loading-Animation-4.gif": "/static/media/Spotify-Loading-Animation-4.f76bdea8fef195245f89.gif",
+    "static/media/CircularStd-Light.otf": "/static/media/CircularStd-Light.4a1a0bfcc3a53847a945.otf",
+    "static/media/CircularStd-Bold.otf": "/static/media/CircularStd-Bold.5c4514a8399ec0064b9b.otf",
+    "index.html": "/index.html",
+    "main.b35d00ea.css.map": "/static/css/main.b35d00ea.css.map",
+    "main.9a960b8e.js.map": "/static/js/main.9a960b8e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b35d00ea.css",
+    "static/js/main.9a960b8e.js"
+  ]
+}
