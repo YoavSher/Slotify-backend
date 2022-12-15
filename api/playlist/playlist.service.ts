@@ -8,7 +8,8 @@ async function query() {
     try {
         const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
         INNER JOIN users
-        ON users._id = playlists.creatorId`
+        ON users._id = playlists.creatorId
+        LIMIT 35`
         const playlists = await sqlService.runSQL(query)
         return playlists
     } catch (err) {
