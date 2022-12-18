@@ -1,11 +1,13 @@
 export { }
+import { Request, Response,Application } from 'express'
 
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 
-const app = express()
+const app:Application = express()
+// const app = express()
 const http = require('http').createServer(app)
 
 // Express App Config
@@ -43,9 +45,13 @@ app.use('/api/song', songRoutes)
 setupSocketAPI(http)
 
 
-app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
+app.get('/**', (req: Request, res:Response) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
+
+// app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
+// })
 
 
 const logger = require('./services/logger.service')
@@ -53,4 +59,3 @@ const port = process.env.PORT || 3030
 http.listen(port, () => {
     logger.info('Server is running on port: ' + port)
 })
-

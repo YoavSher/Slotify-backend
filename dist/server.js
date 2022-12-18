@@ -5,13 +5,12 @@ const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const app = express();
+// const app = express()
 const http = require('http').createServer(app);
 // Express App Config
 app.use(cookieParser());
 app.use(express.json());
-
 app.use(express.static(path.resolve(__dirname, 'public')));
-
 const playlistRoutes = require('./api/playlist/playlist.routes');
 const songRoutes = require('./api/song/song.routes');
 const userRoutes = require('./api/user/user.routes');
@@ -34,6 +33,9 @@ setupSocketAPI(http);
 app.get('/**', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+// app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
+// })
 const logger = require('./services/logger.service');
 const port = process.env.PORT || 3030;
 http.listen(port, () => {
