@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const logger = require('../../services/logger.service');
 const sqlService = require('../../services/db.service');
+const songService = require('../song/song.service');
 async function getUserSongs(userId) {
     try {
         const query = `SELECT addedAt,videoId,title,artist,image,duration
@@ -16,10 +17,11 @@ async function getUserSongs(userId) {
         console.log(err);
     }
 }
-async function addLikedSong(userId, songId) {
+async function addLikedSong(userId, song) {
     try {
+        const isSongInDB = await songService.addSong(song);
         const query = `INSERT INTO usersLikedSongs (userId,songId,addedAt)
-        values(${userId},'${songId}','${Date.now()}');`;
+        values(${userId},'${song.videoId}','${Date.now()}');`;
         await sqlService.runSQL(query);
         return true;
     }

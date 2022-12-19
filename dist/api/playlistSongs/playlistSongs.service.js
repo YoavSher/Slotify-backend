@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sqlService = require('../../services/db.service');
+const songService = require('../song/song.service');
 async function getSongs(playlistId) {
     try {
         const query = `SELECT videoId,title,artist,image,duration,addedAt
@@ -16,8 +17,10 @@ async function getSongs(playlistId) {
         console.log(err);
     }
 }
-async function addPlaylistSong({ videoId, playlistId, idx, addedAt }) {
+async function addPlaylistSong(playlistId, song) {
     try {
+        const isSongInDB = await songService.addSong(song);
+        const { videoId, addedAt, idx } = song;
         const query = `INSERT INTO playlistSongs( playlistId, songId,addedAt,idx)
                 VALUES (${playlistId},'${videoId}','${addedAt}',${idx});`;
         const action = await sqlService.runSQL(query);
