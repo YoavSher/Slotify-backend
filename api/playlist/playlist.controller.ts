@@ -10,6 +10,8 @@ const asyncLocalStorage = require('../../services/als.service')
 
 
 async function getPlaylists(req: Request, res: Response) {
+    console.log('got to controller');
+    
     try {
         const playlists = await playlistService.query()
         res.send(playlists)
@@ -61,6 +63,7 @@ async function removePlaylist(req: Request, res: Response) {
     try {
         const playlistId = req.params.id
         const info = await playlistService.remove(playlistId)
+        console.log('info:', info)
         res.send(info)
     } catch (err) {
         logger.error('Failed to remove playlist', err)

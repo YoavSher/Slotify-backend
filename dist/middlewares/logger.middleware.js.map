@@ -1,0 +1,1 @@
+{"version":3,"file":"logger.middleware.js","sourceRoot":"","sources":["../../middlewares/logger.middleware.ts"],"names":[],"mappings":";;AACA,MAAM,MAAM,GAAG,OAAO,CAAC,4BAA4B,CAAC,CAAA;AAEpD,KAAK,UAAU,GAAG,CAAC,GAAQ,EAAE,GAAQ,EAAE,IAAgB;IACrD,MAAM,CAAC,IAAI,CAAC,0BAA0B,CAAC,CAAA;IACvC,IAAI,EAAE,CAAA;AACR,CAAC;AAED,MAAM,CAAC,OAAO,GAAG;IACf,GAAG;CACJ,CAAA"}

@@ -5,6 +5,8 @@ const usersPlaylistsService = require('../userPlaylists/userPlaylists.service')
 const playlistSongsService = require('../playlistSongs/playlistSongs.service')
 
 async function query() {
+    console.log('got to service');
+    
     try {
         const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
         INNER JOIN users
