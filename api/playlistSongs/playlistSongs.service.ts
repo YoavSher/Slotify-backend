@@ -1,7 +1,7 @@
-import { PlaylistSong, Song } from "../../interfaces/song"
+import { Song } from "../../interfaces/song"
 
 const sqlService = require('../../services/db.service')
-
+const songService = require('../song/song.service')
 
 async function getSongs(playlistId: number) {
     try {
@@ -19,14 +19,16 @@ async function getSongs(playlistId: number) {
     }
 }
 
-async function addPlaylistSong({ videoId, playlistId, idx, addedAt }: PlaylistSong) {
+async function addPlaylistSong(playlistId: number, song: Song) {
     try {
+        const isSongInDB = await songService.addSong(song)
+        const { videoId, addedAt, idx } = song
         const query = `INSERT INTO playlistSongs( playlistId, songId,addedAt,idx)
                 VALUES (${playlistId},'${videoId}','${addedAt}',${idx});`
         const action = await sqlService.runSQL(query)
         return action.affectedRows === 1
     } catch (err) {
-        
+
         throw err
     }
 }
@@ -49,7 +51,7 @@ async function removeFromPlaylist(removedSong: removedSong) {
         const deleteQuery = `DELETE FROM playlistSongs WHERE
         songId='${videoId}' AND playlistId=${playlistId}`
         sqlService.runSQL(deleteQuery)
-        return true 
+        return true
     } catch (err) {
         throw err
     }

@@ -14,7 +14,7 @@ async function add(songs: Song[]) {
 
                 await sqlService.runSQL(query)
             } catch (err) {
-                // logger.error('song already exists', err)
+                logger.error('song already exists', err)
             }
         })
     } catch (err) {
@@ -36,7 +36,22 @@ async function getSearchedSongs(searchTerm: string) {
     }
 }
 
+async function addSong(song: Song) {
+    try {
+        const { videoId, duration, image, artist, title } = song
+        const query = `INSERT IGNORE INTO songs (videoId, title, artist, image,duration)
+                    VALUES ('${videoId}','${title}','${artist}','${image}',${duration})`
+
+        const ans = await sqlService.runSQL(query)
+        return
+
+    } catch (err) {
+        logger.error('cannot add song', err)
+    }
+}
+
 module.exports = {
     add,
-    getSearchedSongs
+    getSearchedSongs,
+    addSong
 }
