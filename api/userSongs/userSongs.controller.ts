@@ -23,9 +23,9 @@ async function getUsersLikedSongs(req: Request, res: Response) {
 async function likeSongByUser(req: Request, res: Response) {
     try {
 
-        const { videoId } = req.body
+        const { song } = req.body
         const { loggedinUser } = asyncLocalStorage.getStore()
-        const isLiked = await songService.addLikedSong(loggedinUser._id, videoId)
+        const isLiked = await songService.addLikedSong(loggedinUser._id, song)
         if (isLiked) res.json('sucsess')
     } catch (err) {
         logger.error('Failed to add songs', err)

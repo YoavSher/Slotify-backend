@@ -21,8 +21,8 @@ async function getPlaylistSongs(req: Request, res: Response) {
 
 async function addPlaylistSong(req: Request, res: Response) {
     try {
-        const playlistSong = req.body
-        const isSong = await songService.addPlaylistSong(playlistSong)
+        const { playlistId, song } = req.body
+        const isSong = await songService.addPlaylistSong(playlistId, song)
         if (isSong) res.json('success')
         else throw new Error('Cannot add song,try again later')
     } catch (err) {

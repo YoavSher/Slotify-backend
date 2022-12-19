@@ -1,4 +1,4 @@
-import { PlaylistSong, Song } from "../../interfaces/song"
+import { Song } from "../../interfaces/song"
 
 const logger = require('../../services/logger.service')
 const sqlService = require('../../services/db.service')
