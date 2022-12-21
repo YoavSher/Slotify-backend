@@ -11,6 +11,7 @@ const http = require('http').createServer(app);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, 'public')));
+
 const playlistRoutes = require('./api/playlist/playlist.routes');
 const songRoutes = require('./api/song/song.routes');
 const userRoutes = require('./api/user/user.routes');
@@ -30,9 +31,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/song', songRoutes);
 setupSocketAPI(http);
-app.get('/**', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// app.get('/**', (req: Request, res:Response) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'))
+// })
 // app.get('/**', (req: any, res: { sendFile: (arg0: any) => void }) => {
 //     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 // })

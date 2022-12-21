@@ -10,8 +10,6 @@ const asyncLocalStorage = require('../../services/als.service')
 
 
 async function getPlaylists(req: Request, res: Response) {
-    console.log('got to controller');
-    
     try {
         const playlists = await playlistService.query()
         res.send(playlists)
@@ -23,10 +21,8 @@ async function getPlaylists(req: Request, res: Response) {
 
 async function getPlaylistById(req: Request, res: Response) {
     try {
-        // console.log('req.params:', req.params)
         const { id } = req.params
         const fullPlaylist = await playlistService.getById(id)
-        console.log('fullPlaylist:', fullPlaylist.playlist)
         res.send(fullPlaylist)
     } catch (err) {
         logger.error('Cannot get playlist', err)
@@ -50,7 +46,6 @@ async function addPlaylist(req: Request, res: Response) {
 async function updatePlaylist(req: Request, res: Response) {
     try {
         const playlist = req.body
-        // console.log('playlist:', playlist)
         await playlistService.update(playlist)
         // res.json(addedPlaylist)
     } catch (err) {
@@ -63,7 +58,6 @@ async function removePlaylist(req: Request, res: Response) {
     try {
         const playlistId = req.params.id
         const info = await playlistService.remove(playlistId)
-        console.log('info:', info)
         res.send(info)
     } catch (err) {
         logger.error('Failed to remove playlist', err)
@@ -73,10 +67,8 @@ async function removePlaylist(req: Request, res: Response) {
 
 async function getSearchedPlaylist(req: Request, res: Response) {
     try {
-        console.log('req.params:', req.params)
         const { searchTerm, songsIds } = req.params
         const playlist = await playlistService.searchPlaylists(songsIds, searchTerm)
-        // console.log('playlist:', playlist)
         res.send(playlist)
     } catch (err) {
         logger.error('Failed to get playlists', err)
@@ -84,12 +76,10 @@ async function getSearchedPlaylist(req: Request, res: Response) {
     }
 }
 
-async function getGenrePlaylists(req: Request, res: Response){
+async function getGenrePlaylists(req: Request, res: Response) {
     try {
-        console.log('req.params:', req.params)
         const { genre } = req.params
         const playlists = await playlistService.getGenrePlaylists(genre)
-        // // console.log('playlist:', playlist)
         res.send(playlists)
     } catch (err) {
         logger.error('Failed to get genre playlists', err)

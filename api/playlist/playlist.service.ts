@@ -5,8 +5,7 @@ const usersPlaylistsService = require('../userPlaylists/userPlaylists.service')
 const playlistSongsService = require('../playlistSongs/playlistSongs.service')
 
 async function query() {
-    console.log('got to service');
-    
+
     try {
         const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
         INNER JOIN users
@@ -36,8 +35,8 @@ async function getById(id: number) {
     }
 }
 
-async function add(userId: string) { 
-    
+async function add(userId: string) {
+
     try {
 
         const query = `INSERT INTO playlists (name, image, creatorId)
@@ -48,7 +47,6 @@ async function add(userId: string) {
         INNER JOIN users
         ON users._id = playlists.creatorId
         WHERE playlists._id =LAST_INSERT_ID()`)
-        console.log('newPlaylist:', newPlaylist)
         const { _id, creatorId } = newPlaylist
         await usersPlaylistsService.addLikedPlaylist(creatorId, _id)
         return newPlaylist
@@ -60,13 +58,11 @@ async function add(userId: string) {
 
 async function update(playlist: Playlist) {
     try {
-        // console.log('playlist:', playlist)
         const { _id, name, image } = playlist
         const query = `UPDATE playlists 
             SET name = '${name}', image='${image}'
             WHERE _id = ${_id}`
         const updatedPlaylist = await sqlService.runSQL(query)
-        console.log('updatedPlaylist:', updatedPlaylist)
     } catch (err) {
         logger.error('cannot update playlist', err)
         throw err
@@ -76,7 +72,6 @@ async function update(playlist: Playlist) {
 
 async function remove(playlistId: number) {
     try {
-        // console.log('playlist:', playlist)
 
         const deleteUserPlaylistQuery = `DELETE FROM usersLikedPlaylists WHERE
         playlistId=${playlistId}`
@@ -114,7 +109,6 @@ async function searchPlaylists(songsId: string, searchTerm: string) {
         songsIds.forEach(id => idsStr += ` OR songId = '${id}'`)
         query += idsStr
         const playlist = await sqlService.runSQL(query)
-        console.log('playlist:', playlist)
         return playlist
     } catch (err) {
         logger.error('cannot get searched playlist', err)
@@ -132,7 +126,6 @@ async function getGenrePlaylists(genre: string) {
         ON users._id = playlists.creatorId
         WHERE genre = '${genre.toLocaleLowerCase()}'`
         const playlists = await sqlService.runSQL(query)
-        // console.log('playlist:', playlists)
         return playlists
     } catch (err) {
         logger.error('cannot get genre playlists', err)

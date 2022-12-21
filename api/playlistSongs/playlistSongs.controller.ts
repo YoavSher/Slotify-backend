@@ -46,8 +46,6 @@ async function removeFromPlaylist(req: Request, res: Response) {
 
 async function reIndexSongs(req: Request, res: Response) {
     try {
-
-        // console.log('req.body:', req.body)
         const isReOrdered = await songService.reIndex(req.body)
         if (isReOrdered) res.json('success')
     } catch (err) {

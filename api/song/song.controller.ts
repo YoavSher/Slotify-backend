@@ -17,7 +17,6 @@ async function addSongs(req: Request, res: Response) {
 
 async function getSearchedSongs(req: Request, res: Response) {
     try {
-        // console.log('params:', req.params)
         const { searchTerm } = req.params
         const songs = await songService.getSearchedSongs(searchTerm)
         res.send(songs)

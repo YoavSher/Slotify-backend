@@ -29,7 +29,6 @@ async function likeSongByUser(req, res) {
 }
 async function removeLikedSong(req, res) {
     try {
-        console.log(req.params);
         const videoId = req.params.id;
         const { loggedinUser } = asyncLocalStorage.getStore();
         const isDeleted = await songService.removeLikedSong(loggedinUser._id, videoId);

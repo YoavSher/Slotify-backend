@@ -12,7 +12,7 @@ async function getUserPlaylists(userId) {
         ON users._id =usersLikedPlaylists.userId
         WHERE userId=${userId};`;
         const playlists = await sqlService.runSQL(query);
-        console.log(playlists);
+        console.log('got user playlists');
         return playlists;
     }
     catch (err) {
