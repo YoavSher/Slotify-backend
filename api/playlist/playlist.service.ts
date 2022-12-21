@@ -36,14 +36,18 @@ async function getById(id: number) {
     }
 }
 
-async function add(userId: string) {
+async function add(userId: string) { 
+    
     try {
 
         const query = `INSERT INTO playlists (name, image, creatorId)
         VALUES ('New Playlist','https://thumbs.dreamstime.com/b/music-background-panorama-13786355.jpg',
         '${userId}')`
         await sqlService.runSQL(query)
-        const [newPlaylist] = await sqlService.runSQL(`SELECT * FROM playlists WHERE _id=LAST_INSERT_ID()`)
+        const [newPlaylist] = await sqlService.runSQL(`SELECT playlists._id AS _id, name, image, creatorId, fullName FROM playlists
+        INNER JOIN users
+        ON users._id = playlists.creatorId
+        WHERE playlists._id =LAST_INSERT_ID()`)
         console.log('newPlaylist:', newPlaylist)
         const { _id, creatorId } = newPlaylist
         await usersPlaylistsService.addLikedPlaylist(creatorId, _id)

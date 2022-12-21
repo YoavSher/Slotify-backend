@@ -1,8 +1,8 @@
-import { Connection, MysqlError } from 'mysql'
+import { Connection, MysqlError, Pool } from 'mysql'
 
 var mysql = require('mysql')
 
-var pool = mysql.createPool({
+var pool: Pool = mysql.createPool({
     host: 'sql8.freesqldatabase.com',
     port: 3306,
     user: 'sql8582751',

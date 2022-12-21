@@ -15,7 +15,8 @@ async function getUserPlaylists(userId: number) {
         ON users._id =usersLikedPlaylists.userId
         WHERE userId=${userId};`
         const playlists = await sqlService.runSQL(query)
-        console.log(playlists)
+        // console.log(playlists)
+        console.log('got user playlists');
         return playlists
     } catch (err) {
         console.log(err)
@@ -23,6 +24,8 @@ async function getUserPlaylists(userId: number) {
 }
 
 async function addLikedPlaylist(userId: number, playlistId: number) {
+    console.log('userId:', userId)
+    console.log('playlistId:', playlistId)
     try {
         const query = `INSERT INTO usersLikedPlaylists (userId,playlistId)
         values(${userId},${playlistId});`
