@@ -15,8 +15,8 @@ async function getPlaylistSongs(req, res) {
 }
 async function addPlaylistSong(req, res) {
     try {
-        const playlistSong = req.body;
-        const isSong = await songService.addPlaylistSong(playlistSong);
+        const { playlistId, song } = req.body;
+        const isSong = await songService.addPlaylistSong(playlistId, song);
         if (isSong)
             res.json('success');
         else

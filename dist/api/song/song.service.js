@@ -11,7 +11,7 @@ async function add(songs) {
                 await sqlService.runSQL(query);
             }
             catch (err) {
-                // logger.error('song already exists', err)
+                logger.error('song already exists', err);
             }
         });
     }
@@ -33,8 +33,21 @@ async function getSearchedSongs(searchTerm) {
         logger.error('cannot get songs', err);
     }
 }
+async function addSong(song) {
+    try {
+        const { videoId, duration, image, artist, title } = song;
+        const query = `INSERT IGNORE INTO songs (videoId, title, artist, image,duration)
+                    VALUES ('${videoId}','${title}','${artist}','${image}',${duration})`;
+        const ans = await sqlService.runSQL(query);
+        return;
+    }
+    catch (err) {
+        logger.error('cannot add song', err);
+    }
+}
 module.exports = {
     add,
-    getSearchedSongs
+    getSearchedSongs,
+    addSong
 };
 //# sourceMappingURL=song.service.js.map
