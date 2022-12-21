@@ -2,6 +2,7 @@ import { Connection, MysqlError, Pool } from 'mysql'
 
 var mysql = require('mysql')
 
+
 var pool: Pool = mysql.createPool({
     host: 'sql8.freesqldatabase.com',
     port: 3306,
