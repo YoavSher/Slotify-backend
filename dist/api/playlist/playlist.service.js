@@ -43,8 +43,11 @@ async function add(userId) {
         INNER JOIN users
         ON users._id = playlists.creatorId
         WHERE playlists._id =LAST_INSERT_ID()`);
-        const { _id, creatorId } = newPlaylist;
-        await usersPlaylistsService.addLikedPlaylist(creatorId, _id);
+        setTimeout(async () => {
+            const { _id, creatorId } = newPlaylist;
+            await usersPlaylistsService.addLikedPlaylist(creatorId, _id);
+            console.log('success');
+        }, 700);
         return newPlaylist;
     }
     catch (err) {
