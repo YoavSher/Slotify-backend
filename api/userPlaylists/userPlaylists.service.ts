@@ -24,6 +24,7 @@ async function getUserPlaylists(userId: number) {
 }
 
 async function addLikedPlaylist(userId: number, playlistId: number) {
+
     try {
         const query = `INSERT INTO usersLikedPlaylists (userId,playlistId)
         values(${userId},${playlistId});`

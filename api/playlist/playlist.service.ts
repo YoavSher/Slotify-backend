@@ -49,7 +49,7 @@ async function add(userId: string) {
         WHERE playlists._id =LAST_INSERT_ID()`)
 
         if (res.length === 0) {
-            console.log('trying again');
+            // console.log('trying again');
             res = await sqlService.runSQL(`SELECT playlists._id AS _id, name, image, creatorId, fullName FROM playlists
             INNER JOIN users
             ON users._id = playlists.creatorId

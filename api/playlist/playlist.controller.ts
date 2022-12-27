@@ -32,7 +32,6 @@ async function getPlaylistById(req: Request, res: Response) {
 
 async function addPlaylist(req: Request, res: Response) {
     try {
-        // const playlist = req.body
 
         const { loggedinUser } = asyncLocalStorage.getStore()
         const addedPlaylist = await playlistService.add(loggedinUser._id)
@@ -47,7 +46,6 @@ async function updatePlaylist(req: Request, res: Response) {
     try {
         const playlist = req.body
         await playlistService.update(playlist)
-        // res.json(addedPlaylist)
     } catch (err) {
         logger.error('Failed to update playlist', err)
         res.status(500).send({ err: 'Failed to update playlist' })
