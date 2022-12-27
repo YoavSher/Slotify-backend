@@ -5,7 +5,6 @@ const playlistService = require('./playlist.service');
 const authService = require('../auth/auth.service');
 const asyncLocalStorage = require('../../services/als.service');
 async function getPlaylists(req, res) {
-    console.log('got to controller');
     try {
         const playlists = await playlistService.query();
         res.send(playlists);
@@ -17,7 +16,6 @@ async function getPlaylists(req, res) {
 }
 async function getPlaylistById(req, res) {
     try {
-        // console.log('req.params:', req.params)
         const { id } = req.params;
         const fullPlaylist = await playlistService.getById(id);
         res.send(fullPlaylist);
@@ -42,7 +40,6 @@ async function addPlaylist(req, res) {
 async function updatePlaylist(req, res) {
     try {
         const playlist = req.body;
-        // console.log('playlist:', playlist)
         await playlistService.update(playlist);
         // res.json(addedPlaylist)
     }
@@ -55,7 +52,6 @@ async function removePlaylist(req, res) {
     try {
         const playlistId = req.params.id;
         const info = await playlistService.remove(playlistId);
-        console.log('info:', info);
         res.send(info);
     }
     catch (err) {
@@ -65,10 +61,8 @@ async function removePlaylist(req, res) {
 }
 async function getSearchedPlaylist(req, res) {
     try {
-        console.log('req.params:', req.params);
         const { searchTerm, songsIds } = req.params;
         const playlist = await playlistService.searchPlaylists(songsIds, searchTerm);
-        // console.log('playlist:', playlist)
         res.send(playlist);
     }
     catch (err) {
@@ -78,10 +72,8 @@ async function getSearchedPlaylist(req, res) {
 }
 async function getGenrePlaylists(req, res) {
     try {
-        console.log('req.params:', req.params);
         const { genre } = req.params;
         const playlists = await playlistService.getGenrePlaylists(genre);
-        // // console.log('playlist:', playlist)
         res.send(playlists);
     }
     catch (err) {

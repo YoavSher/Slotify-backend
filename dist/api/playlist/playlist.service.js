@@ -5,7 +5,6 @@ const sqlService = require('../../services/db.service');
 const usersPlaylistsService = require('../userPlaylists/userPlaylists.service');
 const playlistSongsService = require('../playlistSongs/playlistSongs.service');
 async function query() {
-    console.log('got to service');
     try {
         const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
         INNER JOIN users
@@ -58,13 +57,11 @@ async function add(userId) {
 }
 async function update(playlist) {
     try {
-        // console.log('playlist:', playlist)
         const { _id, name, image } = playlist;
         const query = `UPDATE playlists 
             SET name = '${name}', image='${image}'
             WHERE _id = ${_id}`;
         const updatedPlaylist = await sqlService.runSQL(query);
-        console.log('updatedPlaylist:', updatedPlaylist);
     }
     catch (err) {
         logger.error('cannot update playlist', err);
@@ -73,7 +70,6 @@ async function update(playlist) {
 }
 async function remove(playlistId) {
     try {
-        // console.log('playlist:', playlist)
         const deleteUserPlaylistQuery = `DELETE FROM usersLikedPlaylists WHERE
         playlistId=${playlistId}`;
         await sqlService.runSQL(deleteUserPlaylistQuery);
@@ -104,7 +100,6 @@ async function searchPlaylists(songsId, searchTerm) {
         songsIds.forEach(id => idsStr += ` OR songId = '${id}'`);
         query += idsStr;
         const playlist = await sqlService.runSQL(query);
-        console.log('playlist:', playlist);
         return playlist;
     }
     catch (err) {
@@ -121,7 +116,6 @@ async function getGenrePlaylists(genre) {
         ON users._id = playlists.creatorId
         WHERE genre = '${genre.toLocaleLowerCase()}'`;
         const playlists = await sqlService.runSQL(query);
-        // console.log('playlist:', playlists)
         return playlists;
     }
     catch (err) {

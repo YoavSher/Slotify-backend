@@ -10,8 +10,6 @@ const asyncLocalStorage = require('../../services/als.service')
 
 
 async function getPlaylists(req: Request, res: Response) {
-    console.log('got to controller');
-    
     try {
         const playlists = await playlistService.query()
         res.send(playlists)
@@ -23,10 +21,8 @@ async function getPlaylists(req: Request, res: Response) {
 
 async function getPlaylistById(req: Request, res: Response) {
     try {
-        // console.log('req.params:', req.params)
         const { id } = req.params
         const fullPlaylist = await playlistService.getById(id)
-        console.log('fullPlaylist:', fullPlaylist.playlist)
         res.send(fullPlaylist)
     } catch (err) {
         logger.error('Cannot get playlist', err)
@@ -78,7 +74,7 @@ async function getSearchedPlaylist(req: Request, res: Response) {
     }
 }
 
-async function getGenrePlaylists(req: Request, res: Response){
+async function getGenrePlaylists(req: Request, res: Response) {
     try {
         const { genre } = req.params
         const playlists = await playlistService.getGenrePlaylists(genre)

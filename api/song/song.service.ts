@@ -29,7 +29,6 @@ async function getSearchedSongs(searchTerm: string) {
         OR title LIKE '%${searchTerm}%' `
         const searchedSongs = await sqlService.runSQL(query)
         const songs = [...searchedSongs].slice(0, 20)
-        // console.log('songs:', songs)
         return songs
     } catch (err) {
         logger.error('cannot get songs', err)
