@@ -20,7 +20,6 @@ async function getPlaylistById(req, res) {
         // console.log('req.params:', req.params)
         const { id } = req.params;
         const fullPlaylist = await playlistService.getById(id);
-        console.log('fullPlaylist:', fullPlaylist.playlist);
         res.send(fullPlaylist);
     }
     catch (err) {

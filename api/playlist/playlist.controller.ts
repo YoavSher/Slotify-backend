@@ -36,7 +36,6 @@ async function getPlaylistById(req: Request, res: Response) {
 
 async function addPlaylist(req: Request, res: Response) {
     try {
-        // const playlist = req.body
 
         const { loggedinUser } = asyncLocalStorage.getStore()
         const addedPlaylist = await playlistService.add(loggedinUser._id)
@@ -50,9 +49,7 @@ async function addPlaylist(req: Request, res: Response) {
 async function updatePlaylist(req: Request, res: Response) {
     try {
         const playlist = req.body
-        // console.log('playlist:', playlist)
         await playlistService.update(playlist)
-        // res.json(addedPlaylist)
     } catch (err) {
         logger.error('Failed to update playlist', err)
         res.status(500).send({ err: 'Failed to update playlist' })
@@ -63,7 +60,6 @@ async function removePlaylist(req: Request, res: Response) {
     try {
         const playlistId = req.params.id
         const info = await playlistService.remove(playlistId)
-        console.log('info:', info)
         res.send(info)
     } catch (err) {
         logger.error('Failed to remove playlist', err)
@@ -73,10 +69,8 @@ async function removePlaylist(req: Request, res: Response) {
 
 async function getSearchedPlaylist(req: Request, res: Response) {
     try {
-        console.log('req.params:', req.params)
         const { searchTerm, songsIds } = req.params
         const playlist = await playlistService.searchPlaylists(songsIds, searchTerm)
-        // console.log('playlist:', playlist)
         res.send(playlist)
     } catch (err) {
         logger.error('Failed to get playlists', err)
@@ -86,10 +80,8 @@ async function getSearchedPlaylist(req: Request, res: Response) {
 
 async function getGenrePlaylists(req: Request, res: Response){
     try {
-        console.log('req.params:', req.params)
         const { genre } = req.params
         const playlists = await playlistService.getGenrePlaylists(genre)
-        // // console.log('playlist:', playlist)
         res.send(playlists)
     } catch (err) {
         logger.error('Failed to get genre playlists', err)

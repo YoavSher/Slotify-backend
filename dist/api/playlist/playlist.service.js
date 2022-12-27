@@ -40,8 +40,13 @@ async function add(userId) {
         VALUES ('New Playlist','https://thumbs.dreamstime.com/b/music-background-panorama-13786355.jpg',
         '${userId}')`;
         await sqlService.runSQL(query);
-        const [newPlaylist] = await sqlService.runSQL(`SELECT * FROM playlists WHERE _id=LAST_INSERT_ID()`);
-        console.log('newPlaylist:', newPlaylist);
+        let res = await sqlService.runSQL(`SELECT * FROM playlists WHERE _id=LAST_INSERT_ID()`);
+        console.log('newPlaylist:', res);
+        if (res.length === 0) {
+            console.log('trying again!')
+            res = await sqlService.runSQL(`SELECT * FROM playlists WHERE _id=LAST_INSERT_ID()`);
+        }
+        const [newPlaylist] = res
         const { _id, creatorId } = newPlaylist;
         await usersPlaylistsService.addLikedPlaylist(creatorId, _id);
         return newPlaylist;
