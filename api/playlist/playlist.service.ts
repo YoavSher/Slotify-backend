@@ -43,15 +43,23 @@ async function add(userId: string) {
         VALUES ('New Playlist','https://thumbs.dreamstime.com/b/music-background-panorama-13786355.jpg',
         '${userId}')`
         await sqlService.runSQL(query)
-        const [newPlaylist] = await sqlService.runSQL(`SELECT playlists._id AS _id, name, image, creatorId, fullName FROM playlists
+        let res = await sqlService.runSQL(`SELECT playlists._id AS _id, name, image, creatorId, fullName FROM playlists
         INNER JOIN users
         ON users._id = playlists.creatorId
         WHERE playlists._id =LAST_INSERT_ID()`)
-        setTimeout(async () => {
-            const { _id, creatorId } = newPlaylist
-            await usersPlaylistsService.addLikedPlaylist(creatorId, _id)
-            console.log('success');
-        }, 700)
+
+        if (res.length === 0) {
+            console.log('trying again');
+            res = await sqlService.runSQL(`SELECT playlists._id AS _id, name, image, creatorId, fullName FROM playlists
+            INNER JOIN users
+            ON users._id = playlists.creatorId
+            WHERE playlists._id =LAST_INSERT_ID()`)
+        }
+
+        const [newPlaylist] = res
+        const { _id, creatorId } = newPlaylist
+        await usersPlaylistsService.addLikedPlaylist(creatorId, _id)
+        console.log('success');
         return newPlaylist
     } catch (err) {
         logger.error('cannot add playlist', err)
