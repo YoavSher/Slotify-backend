@@ -6,7 +6,7 @@ const playlistSongsService = require('../playlistSongs/playlistSongs.service')
 
 async function query() {
     console.log('got to service');
-    
+
     try {
         const query = `SELECT playlists._id, name, image, creatorId, fullName FROM playlists
         INNER JOIN users
@@ -36,8 +36,8 @@ async function getById(id: number) {
     }
 }
 
-async function add(userId: string) { 
-    
+async function add(userId: string) {
+
     try {
 
         const query = `INSERT INTO playlists (name, image, creatorId)
@@ -48,9 +48,10 @@ async function add(userId: string) {
         INNER JOIN users
         ON users._id = playlists.creatorId
         WHERE playlists._id =LAST_INSERT_ID()`)
-        console.log('newPlaylist:', newPlaylist)
-        const { _id, creatorId } = newPlaylist
-        await usersPlaylistsService.addLikedPlaylist(creatorId, _id)
+        setTimeout(async () => {
+            const { _id, creatorId } = newPlaylist
+            await usersPlaylistsService.addLikedPlaylist(creatorId, _id)
+        }, 2000)
         return newPlaylist
     } catch (err) {
         logger.error('cannot add playlist', err)
@@ -114,7 +115,6 @@ async function searchPlaylists(songsId: string, searchTerm: string) {
         songsIds.forEach(id => idsStr += ` OR songId = '${id}'`)
         query += idsStr
         const playlist = await sqlService.runSQL(query)
-        console.log('playlist:', playlist)
         return playlist
     } catch (err) {
         logger.error('cannot get searched playlist', err)
