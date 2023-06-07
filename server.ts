@@ -1,12 +1,12 @@
 export { }
-import { Request, Response,Application } from 'express'
+import { Request, Response, Application } from 'express'
 
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 
-const app:Application = express()
+const app: Application = express()
 // const app = express()
 const http = require('http').createServer(app)
 

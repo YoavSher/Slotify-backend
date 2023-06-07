@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require('mysql');
 var pool = mysql.createPool({
-    host: 'sql8.freesqldatabase.com',
+    host: 'db4free.net',
     port: 3306,
-    user: 'sql8582751',
-    password: '2G1a2nz3Kh',
-    database: 'sql8582751',
+    user: 'yoavs1',
+    password: 'slotify1234',
+    database: 'slotify_db',
     insecureAuth: true
 });
 pool.on('connection', function (connection) {
